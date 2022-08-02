@@ -41,28 +41,3 @@
 // const prop = "sara rincon";
 // const { [prop]: lala } = edadUsuario;
 // console.log(lala);
-
-const myBtn = document.getElementById("button-addon2");
-
-myBtn.addEventListener("click", function () {
-  let lista = document.createElement("li");
-  lista.className = "list-group-item";
-  let valueInput = document.getElementById("input-texto").value;
-  var t = document.createTextNode(valueInput);
-  lista.appendChild(t);
-  if (valueInput === "") {
-    alert("You must write something!");
-  } else {
-    document.getElementById("resultado").appendChild(lista);
-  }
-  document.getElementById("input-texto").value = "";
-
-  let btnclose = document.createElement("i");
-
-  btnclose.className = "fa-solid fa-trash-can";
-
-  lista.appendChild(btnclose);
-  btnclose.addEventListener("click", function () {
-    lista.parentNode.removeChild(lista);
-  });
-});
