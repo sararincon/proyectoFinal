@@ -1,15 +1,30 @@
+require("dotenv").config();
 const { Pool } = require("pg");
 const config = {
-  user: "sararincon",
-  host: "localhost",
-  database: "todo",
-  password: "123456",
-  port: 5432,
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
 };
+
 const pool = new Pool(config);
 
-const getDate = async () => {
-  const result = await pool.query("SELECT NOW()");
-  console.log(result);
+const getTodos = async () => {
+  let query = "SELECT * FROM todos";
+  const res = await pool.query(query);
+  return res.rows;
 };
-getDate();
+getTodos()
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+// const getDate = async () => {
+//   const result = await pool.query("SELECT NOW()");
+//   console.log(result);
+// };
+// getDate();
