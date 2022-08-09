@@ -4,3 +4,6 @@
 <li> Una vez instalada deberas correr el siguiente comando: <code> npm run migrate up </code> </li>
 <br>
 Deberas tener dos tablas creadas en tu base de datos :metal:
+
+## Wireframe :iphone:
+https://miro.com/app/board/uXjVOgS2Nek=/?share_link_id=943907695605
