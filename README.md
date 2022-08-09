@@ -6,5 +6,10 @@
 <br>
 Deberas tener dos tablas creadas en tu base de datos :metal:
 
+Para verificar ejecuta: <code> SELECT * FROM users;</code> y <code> SELECT * FROM tasks;</code> en la consola de psql
+
 ## Wireframe :iphone:
 https://miro.com/app/board/uXjVOgS2Nek=/?share_link_id=943907695605
+
+## UML
+<img> ![Screen Shot 2022-08-09 at 16 32 26](https://user-images.githubusercontent.com/67517405/183755247-7294768f-6e9f-40c6-a966-facc783250c0.png) </img>
