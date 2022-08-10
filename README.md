@@ -1,7 +1,6 @@
 ## Migración de Base de Datos 
 <blockquote> Consideración previa: estar conectado a una Base de Datos </blockquote>
-<li>Instala el paquete siguiente paquete: <code> npm install pg-migrate </code> </li>
-<li> Una vez instalada deberas correr el siguiente comando: <code> npm run migrate up </code> </li>
+<li> Para cargar las tablas, ejecuta el siguiente comando: <code> npm run migrate up </code> </li>
 <li> Para eliminar las tablas, ejecuta el siguiente comando: <code> npm run migrate down </code> </li>
 <br>
 Deberas tener dos tablas creadas en tu base de datos :metal:
