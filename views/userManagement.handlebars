@@ -1,0 +1,61 @@
+
+{{> bts}}
+
+<div class= "container admin my-5 "> 
+    <h1 class="text-center">ADMINISTRADOR</h1>
+<div class="d-flex justify-content-end">
+ <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> Crear nuevo usuario</button>
+{{>modal}}
+</div>
+   
+<table class="table ">
+    <thead class="table-light">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Avatar</th>
+      
+    <th scope="col">Nombre</th>
+      <th scope="col">Apellido</th>
+      
+      <th scope="col">Email</th>
+      <th scope="col">Acciones</th>
+      {{!-- <th scope="col">Contraseña</th> --}}
+    </tr>
+  </thead>
+
+    {{#each formattedResponse}}
+
+      <tbody>
+    <tr>
+      <th scope="row">{{this.id}}</th> 
+
+      <td><img src="{{this.foto}}" style="width: 50px; "></td>
+      <td>{{this.name}}</td>
+      <td>{{this.lastname}}</td>
+      <td>{{this.email}}</td>
+      
+    <td> 
+      <div>
+        <a  href="/edit/{{this.id}}" class="btn btn-primary">Editar </a>
+        <a href="/delete/{{this.id}}" class="btn btn-danger">Eliminar</a>   
+      </div>
+        
+    </td>
+   </tr>
+    </tbody>
+{{/each}}
+</table>
+</div>
+
+<style>
+
+  
+  .container.admin{ margin-top: 50px; padding: 30px; -webkit-box-shadow: 10px 10px
+  32px 0px rgba(138,138,138,0.53); -moz-box-shadow: 10px 10px 32px 0px
+  rgba(138,138,138,0.53); box-shadow: 10px 10px 32px 0px rgba(138,138,138,0.53);
+  border-radius: 31px 31px 31px 31px }
+
+
+</style>
+

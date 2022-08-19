@@ -1,0 +1,84 @@
+
+{{!-- 
+<div class="card">
+    {{#each formattedResponse }}
+  {{!-- <img src="{{this.foto}}" class="card-img-top rounded-circle"  style="width: 100px"alt="..."> --}}
+  {{!-- <div class="card-body">
+    <h5 class="card-title">{{this.email}}</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+  {{/each}}
+</div> --}} --}}
+
+    <section class="container mt-5">
+        
+        <article class="row">
+            <div class="col-md-6">
+                <ul class="list-group" id="todoContainer">
+                    {{#each formattedResponse }}
+                    <li class="list-group-item" id="todoItem">
+                        <span>{{this.task_name}}</span> 
+                        <p hidden>{{this.id_task}}</p>
+                        <button class="btn btn-danger btn-sm float-end"><a href="/dashboard/delete/{{this.id_task}}" class="list-group-item list-group-item-action bg-danger text-white">Eliminar</a></button>                    
+                        <button class="btn btn-warning btn-sm float-end me-3" id="editTodo" data-id="{{this.id_task}}"><a class="list-group-item list-group-item-action bg-warning">Editar</a></button>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <h3>Agregar Tarea</h3>
+                <form method="post" action="/dashboard">
+                    <input type="text" name="todo" placeholder="Ingrese Tarea" class="form-control mb-2">
+                    <button class="btn-dark w-100 p-2">Agregar</button>
+                </form>
+            </div>
+        </article>
+    </section>
+
+ 
+    <script>
+        const todoContainer = document.querySelector('#todoContainer');
+        const todoItem = document.querySelector('#todoItem');
+        todoContainer.addEventListener('click', (event) => {
+            console.log(event.target.tagName)
+            if(event.target.tagName === 'A'){
+                const a = event.target;
+                const li = a.parentNode.parentNode;
+                const ul = li.parentNode;
+                if(a.textContent === 'Editar') {
+                    const span = li.firstElementChild;
+                    const p = li.firstElementChild[1];
+                    console.log("P",p)
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = span.textContent;
+                    input.classList.add('form-control')
+                    li.insertBefore(input, span);
+                    li.removeChild(span);
+                    a.textContent = 'Actualizar';
+                }else if (a.textContent === 'Actualizar') {
+                    const input = li.firstElementChild;
+                    const span = document.createElement('span');
+                    span.textContent = input.value;
+                    fetch(`/dashboard/edit`, {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            task: span.textContent,
+                            id: todoItem.children[1].textContent,
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => location.reload())
+                      .catch(error => console.log(error));
+                    li.insertBefore(span, input);
+                    li.removeChild(input);
+                    a.textContent = 'Editar';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
