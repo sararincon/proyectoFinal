@@ -39,8 +39,17 @@
             required
           />
         </div>
-        <label for="foto">Foto de perfil</label>
-        <input type="file" name="foto" value="{{this.foto}}" />
+
+        <div class="form-group col-12 col-sm-6">
+          <label> Constraseña </label>
+          <input
+            class="form-control m-auto"
+            type="password"
+            name="password"
+            value="{{this.password}}"
+            required
+          />
+        </div>
 
         <button
           href="/edit/{{this.id}}"
@@ -54,3 +63,8 @@
     </form>
   {{/each}}
 </div>
+
+<script>
+  const form = document.querySelector("form");
+
+</script>

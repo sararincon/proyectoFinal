@@ -1,7 +1,11 @@
 
 {{> bts}}
+ <header>
+        {{!-- Navbar --}}
+        {{> navbar }}
+    </header>
 
-<div class= "container admin my-5 "> 
+<div class= "container admin  my-5 "> 
     <h1 class="text-center">ADMINISTRADOR</h1>
     <hr>
 <div class="d-flex justify-content-end">
@@ -9,8 +13,11 @@
 <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal"> Crear nuevo usuario</button>
 {{>modal}}
 </div>
+  
    
-<table class="table ">
+
+
+<table class="table">
     <thead class="table-light">
     <tr>
       <th scope="col">ID</th>
@@ -38,8 +45,8 @@
       
     <td> 
       <div>
-        <a  href="/edit/{{this.id}}" class="btn btn-primary">Editar </a>
-        <a href="/delete/{{this.id}}" class="btn btn-danger">Eliminar</a>   
+        <a  href="/edit/{{this.id}}" class="btn btn-light" style="background-color:#b19ad6;" ><i class="bi bi-pencil-square"></i></a>
+        <a href="/delete/{{this.id}}" class="btn btn-light" style="background-color:#8033FF;"><i class="bi bi-person-x-fill"></i></a>   
       </div>
         
     </td>
@@ -47,6 +54,8 @@
     </tbody>
 {{/each}}
 </table>
+</div>
+
 </div>
 
 <style>

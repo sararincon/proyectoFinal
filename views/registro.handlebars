@@ -1,13 +1,25 @@
 {{> bts}}
 <div class="container d-flex justify-content-center flex-wrap">
 
+<div class="mensajes">
   <h1 class="bi bi-journal-code text-center"> REGISTRO</h1>
+
+  {{#if success}}
+     <div class="alert alert-success" role="alert">
+  {{success}}
+</div>
+  {{/if}}
+
+  {{#if message}}
+      <div class="alert alert-danger">{{ message }}</div>
+  {{/if}}
+  </div>
 
   <form action="/registro" method="post" enctype="multipart/form-data">
     <div class="form-group row w-50 m-auto">
       <div class="form-group col-12 col-sm-6">
         <label>Nombre</label>
-        <input class="form-control m-auto" type="text" name="name" required />
+        <input class="form-control m-auto" type="text" name="name" />
       </div>
 
       <div class="form-group col-12 col-sm-6">
@@ -16,13 +28,13 @@
           class="form-control m-auto"
           type="text"
           name="lastname"
-          required
+          
         />
       </div>
 
       <div class="form-group col-12 col-sm-6">
         <label>Email</label>
-        <input class="form-control m-auto" type="email" name="email" required />
+        <input class="form-control m-auto" type="email" name="email"  />
       </div>
 
       <div class="form-group col-12 col-sm-6">
@@ -31,7 +43,7 @@
           class="form-control m-auto"
           type="password"
           name="password"
-          required
+          
         />
       </div>
 
@@ -41,11 +53,10 @@
         class="btn mt-2 p-2 text-light"
         style="background-color:#8033FF;"
       >Registrarme</button>
-      <button href="#" class="btn btn-light mt-2 p-2"> Login</button>
-
+      
     </div>
-
   </form>
+  <a href="/login" class="btn btn-light mt-2 p-2"> Login</a>
 </div>
 
 <style>

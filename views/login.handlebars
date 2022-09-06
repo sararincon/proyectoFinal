@@ -1,36 +1,59 @@
 <div
   class="container d-flex justify-content-center flex-wrap"
-  style="width: 40%"
+  style="max-width: 800px"
 >
-  <img src="/static/imgs/login.png" class="img-fluid rounded-start" alt="..." />
-  <div class="container-body">
-    <form>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input
-          type="email"
-          class="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-        />
-        <div id="emailHelp" class="form-text">We'll never share your email with
-          anyone else.</div>
+  <div class="row g-2">
+    <div class="col-12 col-8 col-4">
+      <img
+        src="/static/imgs/login.png"
+        class="card-img-top img-fluid"
+        alt="..."
+      />
+      <div class="container-form d-flex justify-content-center flex-wrap">
+        <div class="col-8 col-4">
+          <form method="post" action="/login">
+            {{#if error}}
+              <div class="alert alert-danger">{{error}}</div>
+            {{/if}}
+            {{#if message}}
+              <div class="alert alert-success">{{message}}</div>
+            {{/if}}
+
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address:</label>
+              <input
+                class="form-control mb-2"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Ingrese su correo electrónico"
+                aria-label="Email"
+                required
+              />
+              <label for="exampleInputEmail1" class="form-label">Contraseña:
+              </label>
+              <input
+                class="form-control mb-2"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Ingrese su contraseña"
+                aria-label="Password"
+                required
+              />
+
+            </div>
+            <div class="d-grid gap-2">
+              <button
+                class="btn mt-2 text-light"
+                style="background-color:#6C63FF"
+              >Login</button>
+            </div>
+
+          </form>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input
-          type="password"
-          class="form-control"
-          id="exampleInputPassword1"
-        />
-      </div>
-      <div class="d-grid gap-2">
-        <button
-          class="btn mt-2 text-light"
-          style="background-color:#6C63FF"
-        >Login</button>
-      </div>
-    </form>
+    </div>
   </div>
 </div>
 
