@@ -5,10 +5,14 @@ exports.up = (pgm) => {
     id: { type: "serial", primaryKey: true },
     name: { type: "varchar(100)", notNull: true },
     lastname: { type: "varchar(100)", notNull: true },
-    email: { type: "varchar(64)", notNull: true },
-    password: { type: "varchar(12)", notNull: true },
+    email: { type: "varchar(64)", unique: true, notNull: true },
+    password: { type: "varchar(60)", notNull: true },
     foto: { type: "varchar(100)" },
-    fecha_registro: { type: "timestamp", notNull: true },
+    fecha_registro: {
+      type: "timestamp",
+      notNull: true,
+      default: pgm.func("current_timestamp"),
+    },
     is_admin: { type: "boolean", default: false, notNull: true },
   });
 };

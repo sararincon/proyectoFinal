@@ -1,3 +1,4 @@
+const { moment } = require("moment");
 // function onCreateTask() {
 //   fetch("http://localhost:3000/dashboard", {
 //     method: "post",
@@ -106,9 +107,41 @@ todoContainer.addEventListener("click", (event) => {
   }
 });
 
-function run() {
-  var GetValue = $(".change").val();
-  if (GetValue >= 0 || GetValue <= 100) {
-    $(".progress_inner").css("width", GetValue + "%");
+const due = (expiresdate) => {
+  var now = moment(),
+    due = moment(expiresdate).format("YYYY-MM-DD"),
+    todayMoment = moment().format("YYYY-MM-DD"),
+    dueFormatted = moment(expiresdate).format("MMMM Do YYYY"),
+    tmrw,
+    yest,
+    dueInfo = {
+      color: "",
+      text: "",
+    };
+
+  tmrw = moment(now.add("days", 1)).format("MMMM Do YYYY");
+  yest = moment(now.subtract("days", 2)).format("MMMM Do YYYY");
+
+  if (todayMoment == due) {
+    dueInfo.text = "Due today";
+    dueInfo.color = "blue";
+  } else {
+    if (moment(due).isBefore(todayMoment)) {
+      dueInfo.color = "red";
+      if (dueFormatted === yest) {
+        dueInfo.text = "Due yesterday" + " " + dueFormatted;
+      } else {
+        dueInfo.text = "Due " + dueFormatted;
+      }
+    } else {
+      dueInfo.color = "blue";
+      if (dueFormatted == tmrw) {
+        dueInfo.text = "Due tomorrow: " + dueFormatted;
+      } else {
+        dueInfo.text = "Due on " + dueFormatted;
+      }
+    }
   }
-}
+
+  return dueInfo;
+};

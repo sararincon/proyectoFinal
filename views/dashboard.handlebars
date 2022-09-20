@@ -31,9 +31,11 @@
               {{#each formattedResponse}}
                 <div class="card my-2" id="todoItem">
                   <div class="card-body">
-                    
-                  <span >{{this.task_name}}</span> - 
-                  <span>{{this.formattedDate}}</span> 
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  <span class="task" >{{this.task_name}}</span>
+                  {{!-- <span>{{this.formattedDate}}</span>  --}}
                    
                     <button class="btn btn-sm float-end">
                       <a
@@ -48,9 +50,6 @@
                   ><a
                       class="list-group-item list-group-item-action bg-light"
                     ><i class="bi bi-pencil-fill"></i> Editar</a></button>
-
-                  
-                   
                     </div>
                     <p hidden>{{this.id}}</p>   
                  </div>

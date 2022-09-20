@@ -6,11 +6,14 @@ exports.up = (pgm) => {
     user_id: {
       type: "serial",
       notNull: true,
-      references: "users(id)",
+      references: "users",
+      onDelete: "cascade",
     },
     task_name: { type: "varchar(64)", notNull: true },
-    due_date: { type: "timestamp", notNull: true },
-    task_percentage: { type: "integer", notNull: true },
+    due_date: { type: "timestamp" },
+    task_percentage: { type: "integer" },
+    status: { type: "integer" },
+    priority: { type: "integer" },
   });
 };
 

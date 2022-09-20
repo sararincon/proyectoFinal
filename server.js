@@ -5,6 +5,8 @@ const exphbs = require("express-handlebars");
 const app = express();
 const port = process.env.PORT || 3000;
 const moment = require("moment");
+const cookieParser = require("cookie-parser");
+const bcrypt = require("bcryptjs");
 
 const {
   crearUsuario,
@@ -13,7 +15,21 @@ const {
   deleteUser,
   updateUser,
   editUser,
+  getTodos,
+  deleteTodo,
+  updateTodo,
 } = require("./db");
+
+const { logIn } = require("./controllers/login.controller.js");
+const { logOut } = require("./controllers/logout.controller");
+const { userRegister } = require("./controllers/register.controller");
+const { validateJWT, getJWT } = require("./helpers/validate-jwt");
+
+//Seteamos las variables de entorno
+// dovtenv.config({ path: "./.env" });
+
+//Para poder trbajar con las cookies
+app.use(cookieParser());
 
 app.use(express.static("public"));
 app.use(express.static("img"));
@@ -22,6 +38,8 @@ app.use("/static", express.static("public"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/js", express.static(__dirname + "/views/js"));
 
 app.set("view engine", "handlebars");
 const hbs = exphbs.create({
@@ -44,18 +62,24 @@ app.get("/", (req, res) => {
   res.render("main", { layout: "welcome" });
 });
 
+//login
+
 app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.get("/register", (req, res) => {
+app.post("/login", logIn, validateJWT);
+
+// Register
+app.get("/registro", (req, res) => {
   res.render("registro");
 });
 
 // --------------------------------ADMIN---------------------------
-app.get("/admin", async (req, res) => {
-  const { id } = req.query;
-  const response = await getUsers(+id);
+
+app.get("/admin", validateJWT, async (req, res) => {
+  // const { id } = req.query;
+  const response = await getUsers();
   const formattedResponse = response.map((todo) => {
     const formattedDate = moment(todo.fecha_registro).format("LLL");
     return {
@@ -63,23 +87,66 @@ app.get("/admin", async (req, res) => {
       formattedDate,
     };
   });
+
   res.render("userManagement", { formattedResponse });
 });
 
 app.post("/registro", async (req, res) => {
-  try {
-    const { name, lastname, email, password } = req.body;
+  const { name, lastname, email, password } = req.body;
+  const hash = await bcrypt.hash(password, 10);
 
+  let fotoName = "default.jpeg";
+  if (req.files) {
     const { foto } = req.files;
-    const foto2 = foto.name;
+    fotoName = foto.name;
+    foto.mv(__dirname + "/img/" + fotoName);
+  }
 
-    foto.mv(__dirname + "/img/" + foto2);
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-    await crearUsuario({ name, lastname, email, password, foto2 });
-    res.redirect("/admin");
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+  try {
+    if (email.match(emailRegex) && password) {
+      await crearUsuario({
+        name,
+        lastname,
+        email,
+        password: hash,
+        fotoName,
+      });
+
+      res.status(200).render("registro", {
+        message: "Usuario creado con éxito. Ya puedes iniciar sesión.",
+      });
+      return;
+    } else {
+      let messageError = null;
+
+      if (!email.match(emailRegex)) {
+        messageError = "Email invalido. Por favor ingrese un email correcto.";
+      }
+
+      if (!password) {
+        messageError = "Debes escribir una contraseña.";
+      }
+
+      res.status(400).render("registro", {
+        error: messageError,
+      });
+    }
+  } catch (error) {
+    let status = 500;
+    let messageError = "Ha ocurrido un error, contacta al administrador.";
+
+    const { constraint } = error;
+
+    if (constraint === "users_email_key") {
+      status = 409;
+      messageError = "El email ya se encuentra registrado. Intenta con otro";
+    }
+
+    res.status(status).render("registro", {
+      error: messageError,
+    });
   }
 });
 
@@ -97,10 +164,10 @@ app.get("/delete/:id", async (req, res) => {
 app.post("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, lastname, email } = req.body;
-    const { foto } = req.files;
-    const foto2 = foto.name;
-    await updateUser({ id, name, lastname, email, foto2 });
+    const { name, lastname, email, password } = req.body;
+    // const { foto } = req.files;
+    // const foto2 = foto.name;
+    await updateUser({ id, name, lastname, email, password });
     res.redirect("/admin");
   } catch (err) {
     console.log(err);
@@ -118,6 +185,51 @@ app.get("/edit/:id", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// -------------TASKS----------------
+
+// Dashboard
+
+app.get("/dashboard", validateJWT, async (req, res) => {
+  const { userId } = await getJWT(req);
+
+  // console.log(userId);
+  const response = await getTodos({ userId });
+  const formattedResponse = response.map((todo) => {
+    const formattedDate = moment(todo.fecha).format("LLL");
+    return {
+      ...todo,
+      formattedDate,
+    };
+  });
+  res.render("dashboard", { formattedResponse });
+});
+
+app.post("/dashboard", validateJWT, async (req, res) => {
+  const { userId } = await getJWT(req);
+  // console.log(userId);
+  const { todo } = req.body;
+  const { status } = req.body;
+
+  console.log("el status", status);
+  await insertTodo({ userId, todo, status });
+  res.redirect("/dashboard");
+});
+
+app.get("/dashboard/delete/:id", validateJWT, async (req, res) => {
+  const { id } = req.params;
+  await deleteTodo(id);
+  res.redirect("/dashboard");
+});
+
+app.put("/dashboard/edit", validateJWT, async (req, res) => {
+  const { id, task } = req.body;
+  // const date = moment().format("YYYY MM DD, h:mm:ss a");
+  await updateTodo(id, task);
+  res.status(200).end();
+});
+
+app.get("/logout", logOut);
 
 app.listen(port, () => {
   console.log("Listening on port " + port);

@@ -1,0 +1,39 @@
+.container {
+  margin-top: 50px;
+  padding: 40px;
+  -webkit-box-shadow: 10px 10px 32px 0px rgba(138, 138, 138, 0.53);
+  -moz-box-shadow: 10px 10px 32px 0px rgba(138, 138, 138, 0.53);
+  box-shadow: 10px 10px 32px 0px rgba(138, 138, 138, 0.53);
+  border-radius: 31px 31px 31px 31px;
+}
+
+.container.admin {
+  margin-top: 50px;
+  padding: 30px;
+  -webkit-box-shadow: 10px 10px 32px 0px rgba(138, 138, 138, 0.53);
+  -moz-box-shadow: 10px 10px 32px 0px rgba(138, 138, 138, 0.53);
+  box-shadow: 10px 10px 32px 0px rgba(138, 138, 138, 0.53);
+  border-radius: 31px 31px 31px 31px;
+}
+
+.card {
+  margin-top: 20px;
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(138, 138, 138, 0.53);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(138, 138, 138, 0.53);
+  box-shadow: 5px 5px 5px 0px rgba(138, 138, 138, 0.53);
+  border-radius: 10px 10px 10px 10px;
+}
+
+.card-body {
+  font-weight: 700;
+}
+
+.progress {
+  height: 15px;
+  width: 50px;
+}
+
+.progress-bar {
+  width: 50px;
+  background-color: blue;
+}

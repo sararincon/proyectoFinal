@@ -1,21 +1,17 @@
-
-{{> bts}}
- <header>
+<header>
         {{!-- Navbar --}}
         {{> navbar }}
     </header>
 
-<div class= "container admin  my-5 "> 
+    <div class= "container admin  my-5 "> 
     <h1 class="text-center">ADMINISTRADOR</h1>
     <hr>
-<div class="d-flex justify-content-end">
+  <div class="d-flex justify-content-end">
  <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal"> Crear nuevo usuario</button>
+<button type="button" class="btn btn-light  mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="bi bi-plus-square-fill"></i> Crear nuevo usuario</button>
 {{>modal}}
 </div>
   
-   
-
 
 <table class="table">
     <thead class="table-light">
@@ -46,26 +42,16 @@
     <td> 
       <div>
         <a  href="/edit/{{this.id}}" class="btn btn-light" style="background-color:#b19ad6;" ><i class="bi bi-pencil-square"></i></a>
-        <a href="/delete/{{this.id}}" class="btn btn-light" style="background-color:#8033FF;"><i class="bi bi-person-x-fill"></i></a>   
+        <a href="/delete/{{this.id}}" class="btn btn-dark" style="background-color:#6C63FF;"><i class="bi bi-person-x-fill"></i></a>   
       </div>
         
-    </td>
-   </tr>
-    </tbody>
-{{/each}}
-</table>
+         </td>
+        </tr>
+      </tbody>
+      {{/each}}
+    </table>
+  </div>
 </div>
 
-</div>
 
-<style>
-
-  
-  .container.admin{ margin-top: 50px; padding: 30px; -webkit-box-shadow: 10px 10px
-  32px 0px rgba(138,138,138,0.53); -moz-box-shadow: 10px 10px 32px 0px
-  rgba(138,138,138,0.53); box-shadow: 10px 10px 32px 0px rgba(138,138,138,0.53);
-  border-radius: 31px 31px 31px 31px }
-
-
-</style>
 
