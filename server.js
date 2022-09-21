@@ -73,7 +73,6 @@ app.post("/registro", userRegister);
 // --------------------------------ADMIN---------------------------
 
 app.get("/admin", validateJWT, async (req, res) => {
-  // const { id } = req.query;
   const response = await getUsers();
   const formattedResponse = response.map((todo) => {
     const formattedDate = moment(todo.fecha_registro).format("LLL");
