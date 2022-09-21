@@ -8,7 +8,7 @@ exports.up = (pgm) => {
     email: { type: "varchar(64)", unique: true, notNull: true },
     password: { type: "varchar(60)", notNull: true },
     foto: { type: "varchar(100)" },
-    fecha_registro: {
+    registration_date: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp"),

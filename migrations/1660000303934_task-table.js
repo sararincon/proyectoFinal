@@ -10,10 +10,6 @@ exports.up = (pgm) => {
       onDelete: "cascade",
     },
     task_name: { type: "varchar(64)", notNull: true },
-    due_date: { type: "timestamp" },
-    task_percentage: { type: "integer" },
-    status: { type: "integer" },
-    priority: { type: "integer" },
   });
 };
 

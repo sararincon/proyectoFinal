@@ -6,10 +6,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const moment = require("moment");
 const cookieParser = require("cookie-parser");
-const bcrypt = require("bcryptjs");
 
 const {
-  crearUsuario,
   getUsers,
   insertTodo,
   deleteUser,
@@ -25,10 +23,7 @@ const { logOut } = require("./controllers/logout.controller");
 const { userRegister } = require("./controllers/register.controller");
 const { validateJWT, getJWT } = require("./helpers/validate-jwt");
 
-//Seteamos las variables de entorno
-// dovtenv.config({ path: "./.env" });
-
-//Para poder trbajar con las cookies
+//Para poder trabajar con las cookies
 app.use(cookieParser());
 
 app.use(express.static("public"));
@@ -39,7 +34,7 @@ app.use("/static", express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/js", express.static(__dirname + "/views/js"));
+app.use("/js", express.static(__dirname + "/public/js"));
 
 app.set("view engine", "handlebars");
 const hbs = exphbs.create({
@@ -75,6 +70,8 @@ app.get("/registro", (req, res) => {
   res.render("registro");
 });
 
+app.post("/registro", userRegister);
+
 // --------------------------------ADMIN---------------------------
 
 app.get("/admin", validateJWT, async (req, res) => {
@@ -89,65 +86,6 @@ app.get("/admin", validateJWT, async (req, res) => {
   });
 
   res.render("userManagement", { formattedResponse });
-});
-
-app.post("/registro", async (req, res) => {
-  const { name, lastname, email, password } = req.body;
-  const hash = await bcrypt.hash(password, 10);
-
-  let fotoName = "default.jpeg";
-  if (req.files) {
-    const { foto } = req.files;
-    fotoName = foto.name;
-    foto.mv(__dirname + "/img/" + fotoName);
-  }
-
-  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-  try {
-    if (email.match(emailRegex) && password) {
-      await crearUsuario({
-        name,
-        lastname,
-        email,
-        password: hash,
-        fotoName,
-      });
-
-      res.status(200).render("registro", {
-        message: "Usuario creado con éxito. Ya puedes iniciar sesión.",
-      });
-      return;
-    } else {
-      let messageError = null;
-
-      if (!email.match(emailRegex)) {
-        messageError = "Email invalido. Por favor ingrese un email correcto.";
-      }
-
-      if (!password) {
-        messageError = "Debes escribir una contraseña.";
-      }
-
-      res.status(400).render("registro", {
-        error: messageError,
-      });
-    }
-  } catch (error) {
-    let status = 500;
-    let messageError = "Ha ocurrido un error, contacta al administrador.";
-
-    const { constraint } = error;
-
-    if (constraint === "users_email_key") {
-      status = 409;
-      messageError = "El email ya se encuentra registrado. Intenta con otro";
-    }
-
-    res.status(status).render("registro", {
-      error: messageError,
-    });
-  }
 });
 
 app.get("/delete/:id", async (req, res) => {
@@ -192,8 +130,6 @@ app.get("/edit/:id", async (req, res) => {
 
 app.get("/dashboard", validateJWT, async (req, res) => {
   const { userId } = await getJWT(req);
-
-  // console.log(userId);
   const response = await getTodos({ userId });
   const formattedResponse = response.map((todo) => {
     const formattedDate = moment(todo.fecha).format("LLL");
@@ -204,24 +140,22 @@ app.get("/dashboard", validateJWT, async (req, res) => {
   });
   res.render("dashboard", { formattedResponse });
 });
-
+//Post de Tarea
 app.post("/dashboard", validateJWT, async (req, res) => {
   const { userId } = await getJWT(req);
-  // console.log(userId);
   const { todo } = req.body;
   const { status } = req.body;
 
-  console.log("el status", status);
   await insertTodo({ userId, todo, status });
   res.redirect("/dashboard");
 });
-
+//Elimina una tarea
 app.get("/dashboard/delete/:id", validateJWT, async (req, res) => {
   const { id } = req.params;
   await deleteTodo(id);
   res.redirect("/dashboard");
 });
-
+//Editando Tareas
 app.put("/dashboard/edit", validateJWT, async (req, res) => {
   const { id, task } = req.body;
   // const date = moment().format("YYYY MM DD, h:mm:ss a");
@@ -229,6 +163,7 @@ app.put("/dashboard/edit", validateJWT, async (req, res) => {
   res.status(200).end();
 });
 
+//logOut
 app.get("/logout", logOut);
 
 app.listen(port, () => {

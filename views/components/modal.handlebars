@@ -1,5 +1,15 @@
 <!-- Modal -->
 {{> bts}}
+
+{{#if message}}
+      <div class="alert alert-success" role="alert">
+        {{message}}
+      </div>
+    {{/if}}
+
+    {{#if error}}
+      <div class="alert alert-danger">{{error}}</div>
+    {{/if}}
 <div
   class="modal fade"
   id="exampleModal"

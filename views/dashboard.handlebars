@@ -31,9 +31,9 @@
               {{#each formattedResponse}}
                 <div class="card my-2" id="todoItem">
                   <div class="card-body">
-                    <div class="progress">
+                    {{!-- <div class="progress">
                       <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    </div> --}}
                   <span class="task" >{{this.task_name}}</span>
                   {{!-- <span>{{this.formattedDate}}</span>  --}}
                    
@@ -47,9 +47,7 @@
                     class="btn btn-sm float-end"
                     id="editTodo"
                     data-id="{{this.id}}"
-                  ><a
-                      class="list-group-item list-group-item-action bg-light"
-                    ><i class="bi bi-pencil-fill"></i> Editar</a></button>
+                  ><a class="list-group-item list-group-item-action bg-light">Editar</a></button>
                     </div>
                     <p hidden>{{this.id}}</p>   
                  </div>
@@ -58,5 +56,51 @@
           </div>
         </article>
       </section>
+    
   </body>
 </html>
+
+<script>
+
+const todoContainer = document.querySelector("#todoContainer");
+const todoItem = document.querySelector("#todoItem");
+todoContainer.addEventListener("click", (event) => {
+  console.log(event.target.tagName);
+  if (event.target.tagName === "A") {
+    const a = event.target;
+    const li = a.parentNode.parentNode;
+    const ul = li.parentNode;
+    if (a.textContent === "Editar") {
+      const span = li.firstElementChild;
+      const p = li.firstElementChild[1];
+      console.log("P", p);
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = span.textContent;
+      input.classList.add("form-control");
+      li.insertBefore(input, span);
+      li.removeChild(span);
+      a.textContent = "Actualizar";
+    } else if (a.textContent === "Actualizar") {
+      const input = li.firstElementChild;
+      const span = document.createElement("span");
+      span.textContent = input.value;
+      fetch("/dashboard/edit", {
+        method: "PUT",
+        body: JSON.stringify({
+          task: span.textContent,
+          id: todoItem.children[1].textContent,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => location.reload())
+        .catch((error) => console.log(error));
+      li.insertBefore(span, input);
+      li.removeChild(input);
+      a.textContent = "Editar";
+    }
+  }
+});
+</script>

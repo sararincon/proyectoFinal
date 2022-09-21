@@ -108,7 +108,7 @@ const getTodos = async ({ userId }) => {
 
 const updateTodo = async (id, todo) => {
   const dbQuery = {
-    text: "UPDATE tasks SET task_name = $1  WHERE id = $2 RETURNING*",
+    text: "UPDATE tasks SET task_name = $1 WHERE id = $2",
     values: [todo, id],
   };
   const result = await pool.query(dbQuery);
