@@ -34,8 +34,6 @@ app.use("/static", express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/js", express.static(__dirname + "/public/js"));
-
 app.set("view engine", "handlebars");
 const hbs = exphbs.create({
   layoutsDir: __dirname + "/views",
@@ -103,8 +101,7 @@ app.post("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { name, lastname, email, password } = req.body;
-    // const { foto } = req.files;
-    // const foto2 = foto.name;
+
     await updateUser({ id, name, lastname, email, password });
     res.redirect("/admin");
   } catch (err) {

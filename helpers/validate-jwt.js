@@ -25,7 +25,7 @@ const getJWT = async (req, res) => {
   // console.log("COOKIE", cookie);
   const token = await jwt.verify(cookie, process.env.SECRETKEY);
 
-  console.log("TOKEEN", token);
+  // console.log("TOKEEN", token);
   return token;
 };
 
