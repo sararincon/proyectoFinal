@@ -10,6 +10,10 @@ exports.up = (pgm) => {
       onDelete: "cascade",
     },
     task_name: { type: "varchar(64)", notNull: true },
+    created_at: {
+      type: "timestamp",
+      default: pgm.func("current_timestamp"),
+    },
   });
 };
 

@@ -50,8 +50,8 @@ const getUser = async ({ email, password }) => {
   try {
     const result = await pool.query(dbQuery);
     return result.rows;
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -97,10 +97,10 @@ const insertTodo = async ({ userId, todo }) => {
   return result.rows[0];
 };
 
-const getTodos = async ({ userId }) => {
+const getTodos = async ({ userId, created_at }) => {
   const dbQuery = {
-    text: "SELECT * FROM tasks WHERE user_id = $1",
-    values: [userId],
+    text: "SELECT * FROM tasks WHERE user_id = $1 ORDER BY $2",
+    values: [userId, created_at],
   };
   const result = await pool.query(dbQuery);
   return result.rows;

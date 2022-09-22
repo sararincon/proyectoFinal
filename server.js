@@ -126,6 +126,7 @@ app.get("/edit/:id", async (req, res) => {
 
 app.get("/dashboard", validateJWT, async (req, res) => {
   const { userId } = await getJWT(req);
+
   const response = await getTodos({ userId });
   const formattedResponse = response.map((todo) => {
     const formattedDate = moment(todo.fecha).format("LLL");
@@ -136,15 +137,16 @@ app.get("/dashboard", validateJWT, async (req, res) => {
   });
   res.render("dashboard", { formattedResponse });
 });
+
 //Post de Tarea
 app.post("/dashboard", validateJWT, async (req, res) => {
   const { userId } = await getJWT(req);
   const { todo } = req.body;
-  const { status } = req.body;
 
-  await insertTodo({ userId, todo, status });
+  await insertTodo({ userId, todo });
   res.redirect("/dashboard");
 });
+
 //Elimina una tarea
 app.get("/dashboard/delete/:id", validateJWT, async (req, res) => {
   const { id } = req.params;

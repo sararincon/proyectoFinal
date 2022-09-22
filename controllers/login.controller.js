@@ -44,7 +44,7 @@ const logIn = async (req = request, res = response) => {
         }
       }
     } else {
-      res.status(403).render("login", {
+      res.status(400).render("login", {
         error: "Revisa tu correo electrónico o contraseña",
       });
     }
