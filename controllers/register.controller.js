@@ -9,7 +9,7 @@ const userRegister = async (req, res) => {
   if (req.files) {
     const { foto } = req.files;
     fotoName = foto.name;
-    foto.mv(__dirname + "/img/" + fotoName);
+    foto.mv("./controllers" + "/img/" + fotoName);
   }
 
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
