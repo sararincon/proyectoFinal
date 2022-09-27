@@ -14,8 +14,8 @@ Para verificar ejecuta: <code> SELECT * FROM users;</code> y <code> SELECT * FRO
 
 [Historias de Usuarios](https://trello.com/b/zl3XJk6y/proyecto)
 
-##Video
-[Video Presentació](https://www.youtube.com/watch?v=3083ujt6kEM&list=PLDwYcP_HFWoiMgU-wPg8F3oBNtMkkw4Rt)
+## Video
+[Video Presentación](https://www.youtube.com/watch?v=3083ujt6kEM&list=PLDwYcP_HFWoiMgU-wPg8F3oBNtMkkw4Rt)
 
 ## UML
 <img> ![Screen Shot 2022-09-21 at 12 04 06](https://user-images.githubusercontent.com/67517405/191540540-8b68d628-dfaa-472f-8e30-1f5d6afd74c6.png)
